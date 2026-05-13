@@ -5,13 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pigment design system - starter</title>
 
-  <!-- Font loading: DM Sans (primary), Crimson Pro (serif accents), JetBrains Mono (numerics). -->
+  <!-- Font loading: DM Sans (primary), Crimson Pro (serif accents + display),
+       JetBrains Mono (numerics). -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300..800&family=Crimson+Pro:ital,wght@0,300..600;1,300..600&family=JetBrains+Mono:wght@400;500;700&display=swap">
 
-  <!-- Inline tokens.css verbatim. For multi-page sites, @import or link the file instead. -->
   <style>
+    /* ============================================================
+     * Design tokens (subset of tokens.css)
+     * ============================================================ */
     :root {
       --carbon-100: #020D23; --carbon-90: #061336;
       --carbon-50: rgba(2,13,35,0.65); --carbon-40: rgba(2,13,35,0.40);
@@ -30,8 +33,10 @@
       --shadow: 0 1px 2px rgba(2,13,35,.04), 0 8px 24px rgba(2,13,35,.06);
     }
 
-    /* Reset + base typography. The ss01 feature-setting enables the
-       Alternative-g glyph (flagged as important in the brand guide). */
+    /* ============================================================
+     * Base typography. The ss01 feature-setting enables the
+     * Alternative-g glyph (flagged as important in the brand guide).
+     * ============================================================ */
     * { box-sizing: border-box; }
     body {
       font-family: 'DM Sans', Arial, sans-serif;
@@ -40,13 +45,16 @@
       background: var(--paper);
       line-height: 1.5;
       margin: 0;
-      padding: 32px 80px 48px;
+      padding: 0 80px 48px;
     }
     .brandbar, main, footer { max-width: 1100px; margin: 0 auto; }
+    p { max-width: 70ch; margin: 0 0 16px; }
+    .muted { color: var(--muted); }
 
-    /* === Brand bar (header) === Matches the scalability-report .brandbar:
-       Pigment wordmark SVG + thin vertical divider + "Platform Excellence"
-       label on the left; right-aligned meta line with version + date. */
+    /* ============================================================
+     * Brand bar (header) - PIGMENT wordmark + divider + label,
+     * right-aligned meta with confidentiality + date + version.
+     * ============================================================ */
     .brandbar {
       display: flex; align-items: center; justify-content: space-between;
       border-bottom: 1px solid var(--rule); padding: 26px 0 22px 0;
@@ -65,8 +73,154 @@
     }
     .brandbar .meta strong { color: var(--ink); font-weight: 700; }
 
-    /* === Footer === Mirror of .brandbar: smaller logo + label on the left,
-       author + note below; version + copyright right-aligned. */
+    /* ============================================================
+     * Cover - Crimson Pro headline + italic lede + factsheet.
+     * The h1 is Crimson Pro Regular mixed-case (NOT DM Sans uppercase);
+     * <em> inside h1 picks up the emerald-bold italic emphasis.
+     * ============================================================ */
+    .cover { padding: 64px 0 56px 0; border-bottom: 1px solid var(--rule); position: relative; }
+    .cover .eyebrow {
+      font-weight: 700; font-size: 11px; letter-spacing: 0.07em;
+      text-transform: uppercase; color: var(--emerald-bold); margin-bottom: 30px;
+      display: inline-flex; align-items: center; gap: 14px; line-height: 1.1;
+    }
+    .cover .eyebrow::before { content: ""; width: 36px; height: 1px; background: var(--emerald-bold); }
+    .cover h1 {
+      font-family: 'Crimson Pro', Georgia, serif; font-weight: 400;
+      font-size: 64px; line-height: 1.0; letter-spacing: -0.03em; color: var(--ink);
+      margin: 0 0 26px 0; max-width: 18ch;
+    }
+    .cover h1 em { font-style: italic; font-weight: 400; color: var(--emerald-bold); }
+    .cover .lede {
+      font-family: 'Crimson Pro', Georgia, serif; font-weight: 300; font-style: italic;
+      font-size: 22px; line-height: 1.4; color: var(--ink-soft);
+      letter-spacing: -0.01em; max-width: 60ch; margin: 0 0 36px 0;
+    }
+    .cover .lede strong { font-weight: 600; font-style: italic; color: var(--emerald-bold); }
+    .cover .factsheet {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+      border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); margin-top: 40px;
+    }
+    /* Divider-grid padding invariant. */
+    .cover .factsheet > div { padding: 18px 22px 18px 0; border-right: 1px solid var(--rule); }
+    .cover .factsheet > div:not(:first-child) { padding-left: 22px; }
+    .cover .factsheet > div:last-child { border-right: none; padding-right: 0; }
+    .cover .factsheet .label {
+      font-weight: 700; font-size: 10px; letter-spacing: 0.07em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+    }
+    .cover .factsheet .value {
+      font-family: 'Crimson Pro', Georgia, serif; font-weight: 500; font-size: 19px;
+      color: var(--ink); line-height: 1.2; letter-spacing: -0.02em;
+    }
+
+    /* ============================================================
+     * Executive summary - dark Carbon card with emerald accent stripe
+     * down the right edge. h2 is Crimson Pro mixed-case (not uppercase);
+     * <em> picks up emerald-soft italic emphasis. KPI strip at the
+     * bottom uses Crimson Pro Medium numbers + DM Sans labels.
+     * ============================================================ */
+    .summary {
+      margin: 56px 0; background: var(--carbon-100); color: rgba(247,244,243,0.85);
+      padding: 52px 56px; border-radius: 4px; position: relative; overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .summary::before {
+      content: ""; position: absolute; top: 0; right: 0; bottom: 0;
+      width: 6px; background: var(--emerald-bold);
+    }
+    .summary .tag {
+      font-weight: 700; font-size: 11px; letter-spacing: 0.07em;
+      text-transform: uppercase; color: var(--emerald-soft); margin-bottom: 18px;
+    }
+    .summary h2 {
+      font-family: 'Crimson Pro', Georgia, serif; font-weight: 400;
+      font-size: 38px; line-height: 1.05; letter-spacing: -0.03em;
+      color: var(--titanium); margin: 0 0 24px 0; max-width: 26ch;
+    }
+    .summary h2 em { font-style: italic; color: var(--emerald-soft); font-weight: 400; }
+    .summary p {
+      color: rgba(247,244,243,0.78); font-size: 15.5px; line-height: 1.6;
+      max-width: 60ch; margin: 0 0 14px 0;
+    }
+    .summary p strong, .summary .pull strong { color: var(--titanium); font-weight: 600; }
+    .summary .pull {
+      border-left: 2px solid var(--emerald-bold); padding: 8px 0 8px 20px;
+      margin: 28px 0 6px 0; font-family: 'Crimson Pro', Georgia, serif;
+      font-style: italic; font-weight: 400; font-size: 21px; line-height: 1.4;
+      letter-spacing: -0.015em; color: var(--titanium); max-width: 56ch;
+    }
+
+    /* KPI strip - 5 columns, divider-grid padding applied. */
+    .kpis {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 0;
+      margin-top: 38px; border-top: 1px solid rgba(255,255,255,.18); padding-top: 28px;
+    }
+    .kpis > div { padding-right: 16px; border-right: 1px solid rgba(255,255,255,.12); }
+    .kpis > div:not(:first-child) { padding-left: 16px; }
+    .kpis > div:last-child { border-right: none; }
+    .kpis .num {
+      font-family: 'Crimson Pro', Georgia, serif; font-weight: 500;
+      font-size: 40px; line-height: 1; color: var(--titanium);
+      letter-spacing: -0.03em; margin-bottom: 10px;
+    }
+    .kpis .num small { font-size: 16px; color: var(--emerald-soft); font-weight: 500; letter-spacing: -0.01em; }
+    .kpis .lab { font-size: 12px; font-weight: 500; color: rgba(247,244,243,0.65); line-height: 1.4; }
+
+    /* ============================================================
+     * Body-section headings (used in numbered sections after summary).
+     * Crimson Pro mixed-case, NOT DM Sans uppercase.
+     * ============================================================ */
+    section.body { padding: 28px 0; }
+    section.body h2 {
+      font-family: 'Crimson Pro', Georgia, serif; font-weight: 400;
+      font-size: 32px; line-height: 1.05; letter-spacing: -0.03em;
+      margin: 36px 0 16px;
+    }
+    section.body h2 em { font-style: italic; color: var(--emerald-bold); font-weight: 400; }
+    section.body h3 {
+      font-family: 'Crimson Pro', Georgia, serif; font-weight: 500;
+      font-size: 22px; letter-spacing: -0.02em;
+      margin: 28px 0 12px;
+    }
+    /* Direct-child selector so this rule applies ONLY to the eyebrow div
+       immediately under section.body, not to nested td.num cells inside
+       any table the section might contain. */
+    section.body > .num {
+      font-weight: 700; font-size: 11px; letter-spacing: 0.07em;
+      text-transform: uppercase; color: var(--emerald-bold);
+      display: inline-flex; align-items: center; gap: 14px; margin-bottom: 14px;
+    }
+    section.body > .num::before { content: ""; width: 36px; height: 1px; background: var(--emerald-bold); }
+
+    /* ============================================================
+     * Callouts - background = Soft tint, accent = Bold border.
+     * ============================================================ */
+    .callout { padding: 18px 22px; margin: 20px 0; border-radius: 2px; }
+    .callout.info     { background: var(--cobalt-soft);  border-left: 4px solid var(--cobalt-bold); }
+    .callout.positive { background: var(--emerald-soft); border-left: 4px solid var(--emerald-bold); }
+    .callout.warn     { background: var(--ochre-soft);   border-left: 4px solid var(--ochre-bold); }
+    .callout .label {
+      font: 700 11px/1.1 'DM Sans', sans-serif;
+      letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink);
+      margin: 0 0 4px;
+    }
+    .callout .body { font: 400 15px/1.5 'DM Sans', sans-serif; color: var(--body); max-width: none; }
+
+    /* ============================================================
+     * Tables - DM Sans headers (right-aligned but NOT mono),
+     * JetBrains Mono data cells with tabular numerals.
+     * ============================================================ */
+    table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 16px 0; }
+    th { text-align: left; font-weight: 600; color: var(--ink); border-bottom: 2px solid var(--ink); padding: 12px 14px; }
+    th.num { text-align: right; }
+    td { padding: 10px 14px; border-bottom: 1px solid var(--rule); color: var(--body); }
+    td.num { font-family: 'JetBrains Mono', Menlo, monospace; text-align: right; font-variant-numeric: tabular-nums; }
+    tr.highlight td { background: var(--paper-deep); font-weight: 600; }
+
+    /* ============================================================
+     * Footer - mirror of brand bar, anchoring the page bottom.
+     * ============================================================ */
     footer {
       padding: 36px 0 56px 0; border-top: 1px solid var(--rule);
       display: grid; grid-template-columns: 1fr auto; gap: 24px;
@@ -82,138 +236,14 @@
     footer .meta { font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; text-align: right; }
     footer .credit { margin-top: 14px; color: var(--ink); font-weight: 600; font-size: 13px; }
     footer .note { margin-top: 6px; color: var(--muted); font-size: 12px; font-weight: 400; max-width: 60ch; }
-
-    /* Eyebrow kicker + display headline + serif sub-header. */
-    .eyebrow {
-      font: 700 11px/1.1 'DM Sans', sans-serif;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: var(--ink);
-      margin: 0 0 12px;
-    }
-    h1 {
-      font: 600 56px/1.1 'DM Sans', sans-serif;
-      letter-spacing: -0.02em;
-      text-transform: uppercase;
-      margin: 0 0 36px;
-    }
-    h2 {
-      font: 400 36px/1.0 'Crimson Pro', Georgia, serif;
-      letter-spacing: -0.03em;
-      margin: 48px 0 16px;
-    }
-    h3 {
-      font: 500 22px/1.0 'Crimson Pro', Georgia, serif;
-      letter-spacing: -0.02em;
-      margin: 28px 0 12px;
-    }
-    h1 em, h2 em {
-      font-family: 'Crimson Pro', Georgia, serif;
-      font-style: italic;
-      font-weight: 400;
-    }
-    p {
-      max-width: 70ch;
-      margin: 0 0 16px;
-    }
-    .muted { color: var(--muted); }
-
-    /* Divider-bordered factsheet grid with the canonical padding fix. */
-    .factsheet {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      margin: 36px 0 0;
-      border-top: 1px solid var(--rule);
-      padding-top: 24px;
-    }
-    .factsheet > div {
-      padding-right: 22px;
-      border-right: 1px solid var(--rule);
-    }
-    .factsheet > div:not(:first-child) {
-      padding-left: 22px;
-    }
-    .factsheet > div:last-child {
-      border-right: none;
-      padding-right: 0;
-    }
-    .factsheet .label {
-      font: 700 10px/1.2 'DM Sans', sans-serif;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin: 0 0 6px;
-    }
-    .factsheet .value {
-      font: 600 18px/1.2 'DM Sans', sans-serif;
-      color: var(--ink);
-    }
-
-    /* Callout themes - background = Soft, accent = Bold. */
-    .callout {
-      padding: 18px 22px;
-      margin: 20px 0;
-      border-radius: 2px;
-    }
-    .callout.info     { background: var(--cobalt-soft);  border-left: 4px solid var(--cobalt-bold); }
-    .callout.positive { background: var(--emerald-soft); border-left: 4px solid var(--emerald-bold); }
-    .callout.warn     { background: var(--ochre-soft);   border-left: 4px solid var(--ochre-bold); }
-    .callout .label {
-      font: 700 11px/1.1 'DM Sans', sans-serif;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: var(--ink);
-      margin: 0 0 4px;
-    }
-    .callout .body {
-      font: 400 15px/1.5 'DM Sans', sans-serif;
-      color: var(--body);
-      max-width: none;
-    }
-
-    /* Tables - DM Sans headers (right-aligned but NOT mono), JetBrains Mono
-       data cells. */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 14px;
-      margin: 16px 0;
-    }
-    th {
-      text-align: left;
-      font-weight: 600;
-      color: var(--ink);
-      border-bottom: 2px solid var(--ink);
-      padding: 12px 14px;
-    }
-    th.num { text-align: right; }
-    td {
-      padding: 10px 14px;
-      border-bottom: 1px solid var(--rule);
-      color: var(--body);
-    }
-    td.num {
-      font-family: 'JetBrains Mono', Menlo, monospace;
-      text-align: right;
-      font-variant-numeric: tabular-nums;
-    }
-    tr.highlight td {
-      background: var(--paper-deep);
-      font-weight: 600;
-    }
-
-    /* Card with brand shadow. */
-    .card {
-      background: var(--paper);
-      box-shadow: var(--shadow);
-      border-radius: 4px;
-      padding: 24px;
-      margin: 24px 0;
-    }
   </style>
 </head>
 <body>
 
+  <!-- ============================================================
+       Brand bar (header) - canonical wordmark + Platform Excellence
+       label, right-aligned meta with confidentiality + date + version.
+       ============================================================ -->
   <header class="brandbar">
     <div class="mark">
       <span class="logo"><svg viewBox="0 0 704 136" xmlns="http://www.w3.org/2000/svg" aria-label="Pigment"><path d="M170.009 107.3V33.1H205.809C210.709 33.1 215.009 34.1 218.609 36C222.309 37.9 225.209 40.6 227.209 44C229.309 47.4 230.309 51.3 230.309 55.9C230.309 60.3 229.309 64.2 227.209 67.6C225.109 71 222.209 73.6 218.509 75.5C214.809 77.4 210.509 78.4 205.709 78.4H183.209V107.3H170.009ZM183.309 67.2H204.409C208.209 67.2 211.309 66.2 213.609 64.1C215.909 62 217.109 59.3 217.109 55.9C217.109 52.4 215.909 49.7 213.609 47.7C211.309 45.7 208.209 44.7 204.409 44.7H183.309V67.2Z" fill="#020D23"/><path d="M247.909 107.3V33.1H261.209V107.3H247.909Z" fill="#020D23"/><path d="M320.609 108.5C315.109 108.5 310.009 107.5 305.309 105.6C300.609 103.7 296.509 100.9 292.909 97.4C289.309 93.9 286.509 89.8 284.509 85.2C282.509 80.6 281.509 75.6 281.509 70.2C281.509 64.8 282.509 59.8 284.509 55.2C286.509 50.6 289.209 46.5 292.809 43C296.309 39.5 300.509 36.8 305.209 34.8C309.909 32.9 315.009 31.9 320.509 31.9C326.509 31.9 332.209 33.1 337.509 35.4C342.809 37.7 347.309 41 350.909 45.3L341.709 53.9C339.109 50.8 335.909 48.4 332.309 46.7C328.609 45 324.709 44.2 320.509 44.2C316.909 44.2 313.609 44.9 310.509 46.2C307.409 47.5 304.709 49.3 302.409 51.7C300.109 54 298.309 56.8 297.009 60C295.709 63.2 295.109 66.6 295.109 70.4C295.109 74.1 295.709 77.5 297.009 80.7C298.309 83.9 300.109 86.7 302.509 89.1C304.909 91.5 307.609 93.3 310.709 94.6C313.809 95.9 317.209 96.6 320.909 96.6C324.809 96.6 328.309 95.8 331.609 94.3C334.809 92.7 337.509 90.6 339.609 87.8C341.709 85 343.009 81.8 343.609 78.2H320.409V66.5H357.709V70.7C357.709 76.1 356.809 81.1 354.909 85.6C353.009 90.2 350.409 94.2 347.209 97.6C343.909 101 340.009 103.6 335.509 105.5C330.709 107.5 325.809 108.5 320.609 108.5Z" fill="#020D23"/><path d="M376.909 107.3V33.1H394.309L416.009 76.8L437.809 33.1H455.109V107.3H442.709V49.7L415.809 102L389.209 49.5V107.3H376.909Z" fill="#020D23"/><path d="M478.709 107.3V33.1H534.609V44.7H492.009V64.3H520.009V75.5H492.009V95.7H535.109V107.3H478.709Z" fill="#020D23"/><path d="M553.709 107.3V33.1H566.409L605.509 84.6V33.1H618.009V107.3H606.309L566.109 54.1V107.3H553.709Z" fill="#020D23"/><path d="M661.109 107.3V44.9H635.509V33.1H699.809V44.9H674.209V107.3H661.109Z" fill="#020D23"/><path d="M73.7092 106.8C52.0092 107 44.0092 77.7 62.7092 66.8C71.1092 62 99.5092 45.5 108.309 40.5C116.509 63.7 106.309 91.3 85.0092 103.6C81.8092 105.6 77.6092 106.8 73.7092 106.8Z" fill="#020D23"/><path d="M73.6089 51.3C70.1089 51.3 66.6089 50.4 63.5089 48.8L62.7089 48.3L17.4089 22.2C25.8089 12.6 37.3089 6.4 49.8089 4.6C52.4089 4.2 55.0089 4 57.6089 4C66.7089 4 75.7089 6.3 83.5089 10.7C83.7089 10.8 85.3089 11.8 85.6089 11.9C94.9089 18.2 97.8089 30.7 92.2089 40.5C88.4089 47.2 81.3089 51.3 73.6089 51.3Z" fill="#020D23"/><path d="M47.109 132C18.509 118.4 0.708993 86.1 4.50899 54.6C4.80899 51.5 5.70899 48.8 7.20899 46.4C14.009 34.4 32.009 32.5 41.109 42.9C44.909 47 47.109 52.4 47.109 58.1V132Z" fill="#020D23"/></svg></span>
@@ -221,84 +251,129 @@
       <span class="label">Platform Excellence</span>
     </div>
     <div class="meta">
-      Confidential &middot; Design System Starter<br>
-      <strong>13th May 2026</strong> &middot; v1
+      Confidential &middot; Prepared for &lt;Audience&gt;<br>
+      <strong>13th May 2026</strong> &middot; v1.0
     </div>
   </header>
 
   <main>
 
-    <p class="eyebrow">Pigment 2024 brand identity &middot; Editorial reference</p>
-    <h1>Style your artefacts with <em>elegance</em>.</h1>
-    <p class="muted">A drop-in HTML skeleton demonstrating the canonical Pigment 2024 visual identity. Open this file in a browser to see the editorial / museum-wayfinding sensibility - Carbon on Titanium, DM Sans Semibold display headings, Crimson Pro serif sub-headers, italic emphasis via &lt;em&gt;.</p>
-
-    <div class="factsheet">
-      <div>
-        <p class="label">Foundation</p>
-        <p class="value">Carbon / Titanium</p>
+    <!-- ============================================================
+         Cover - eyebrow with emerald dash + Crimson Pro headline +
+         italic lede + 4-cell factsheet. The h1 stays mixed-case;
+         <em> picks up emerald-bold italic.
+         ============================================================ -->
+    <section class="cover">
+      <div class="eyebrow">Pigment 2024 brand identity</div>
+      <h1>Style your artefacts with <em>elegance</em>.</h1>
+      <p class="lede">A drop-in HTML skeleton demonstrating the canonical Pigment editorial / museum-wayfinding visual identity. Carbon on Titanium, Crimson Pro display headings, italic emphasis via &lt;em&gt;, and a <strong>fully tokenised colour system</strong> wired to a single source of truth.</p>
+      <div class="factsheet">
+        <div>
+          <div class="label">Foundation</div>
+          <div class="value">Carbon &middot; Titanium</div>
+        </div>
+        <div>
+          <div class="label">Display</div>
+          <div class="value">Crimson Pro 400</div>
+        </div>
+        <div>
+          <div class="label">Body</div>
+          <div class="value">DM Sans Regular</div>
+        </div>
+        <div>
+          <div class="label">Numerics</div>
+          <div class="value">JetBrains Mono</div>
+        </div>
       </div>
-      <div>
-        <p class="label">Display</p>
-        <p class="value">DM Sans Semibold</p>
+    </section>
+
+    <!-- ============================================================
+         Executive summary - dark Carbon card with emerald accent stripe,
+         Crimson Pro h2 in mixed-case, body in titanium 78%, pull quote
+         with emerald left-border, 5-KPI strip across the bottom.
+         ============================================================ -->
+    <section class="summary">
+      <div class="tag">Executive Summary</div>
+      <h2>One self-contained HTML file capturing the <em>entire</em> Pigment editorial visual system.</h2>
+      <p>The starter renders the brand bar, cover, this executive-summary card, a factsheet grid, callouts, numeric tables, and footer in a single page - so any pattern can be lifted directly into a new artefact.</p>
+      <p>Every colour resolves from a CSS-custom-property token block at the top of the stylesheet; brand refresh edits live in one place. Typography pairs <strong>DM Sans + Crimson Pro + JetBrains Mono</strong>, all free Google Fonts, with the Alternative-g glyph enabled by default.</p>
+      <p class="pull">Drop the file into a browser - it renders on-brand immediately, no build step, no preprocessing.</p>
+      <div class="kpis">
+        <div>
+          <div class="num">36<small>&nbsp;tokens</small></div>
+          <div class="lab">Colour tokens spanning Foundation, Bold, Soft, Vivid and Chart tiers</div>
+        </div>
+        <div>
+          <div class="num">3<small>&nbsp;faces</small></div>
+          <div class="lab">DM Sans + Crimson Pro + JetBrains Mono, all free Google Fonts</div>
+        </div>
+        <div>
+          <div class="num">9<small>&nbsp;styles</small></div>
+          <div class="lab">Header XL through Eyebrow and Body, per the brand-guide spec</div>
+        </div>
+        <div>
+          <div class="num">0<small>&nbsp;builds</small></div>
+          <div class="lab">Standalone HTML, no toolchain, no preprocessing</div>
+        </div>
+        <div>
+          <div class="num">1<small>&nbsp;file</small></div>
+          <div class="lab">Edit, save, refresh &mdash; artefact-ready in seconds</div>
+        </div>
       </div>
-      <div>
-        <p class="label">Sub-headers</p>
-        <p class="value">Crimson Pro</p>
+    </section>
+
+    <!-- ============================================================
+         Numbered body section - eyebrow kicker + Crimson Pro h2.
+         ============================================================ -->
+    <section class="body">
+      <div class="num">01 &middot; Patterns</div>
+      <h2>Beyond the cover, the same <em>tokens</em> drive every component.</h2>
+      <p>Callouts, tables, cards, and section banners all reference the same CSS custom properties. Edit one token, every consumer updates. Below: a few of the supporting patterns the starter demonstrates.</p>
+
+      <h3>Callout themes</h3>
+
+      <div class="callout info">
+        <div class="label">Info callout</div>
+        <div class="body">Background uses Cobalt Soft (<code>#B4D7FF</code>), accent border uses Cobalt Bold (<code>#152D80</code>). Pair each Soft with its matching Bold for callouts.</div>
       </div>
-      <div>
-        <p class="label">Numerics</p>
-        <p class="value">JetBrains Mono</p>
+
+      <div class="callout positive">
+        <div class="label">Positive callout</div>
+        <div class="body">Validated results / success framing. Background Emerald Soft (<code>#E8F5CE</code>), accent Emerald Bold (<code>#1D683F</code>).</div>
       </div>
-    </div>
 
-    <h2>Section heading in <em>Crimson Pro</em></h2>
-    <p>Body text sits in DM Sans Regular at 1.5 line-height. The Alternative-g glyph is enabled via <code>font-feature-settings: "ss01" on</code> - look at any lowercase "g" to see the brand-correct loop shape. Editorial whitespace and a constrained reading width (around 70ch) make paragraphs readable; resist stretching prose to the full page width.</p>
+      <div class="callout warn">
+        <div class="label">Warn callout</div>
+        <div class="body">Attention / caveat. Background Ochre Soft (<code>#FBEBB1</code>), accent Ochre Bold (<code>#E9A800</code>). Use sparingly - one or two per section, never stacked.</div>
+      </div>
 
-    <h3>Sub-section in Crimson Pro Medium</h3>
-    <p>Italic emphasis inside headings uses <code>&lt;em&gt;</code> tags - the CSS keys on the element name, so <code>&lt;i&gt;</code> won't get the same treatment. Inside an already-serif h2, the <code>&lt;em&gt;</code> stays Crimson Pro italic for typographic continuity.</p>
+      <h3>Numeric tables</h3>
+      <p>Data cells use JetBrains Mono with tabular numerals so columns align. Headers stay in DM Sans even when right-aligned (the <code>th.num</code> class only flips alignment, not the font).</p>
 
-    <div class="callout info">
-      <p class="label">Info callout</p>
-      <p class="body">Background uses Cobalt Soft (<code>#B4D7FF</code>), accent border uses Cobalt Bold (<code>#152D80</code>). Pair each Soft with its matching Bold for callouts.</p>
-    </div>
-
-    <div class="callout positive">
-      <p class="label">Positive callout</p>
-      <p class="body">Validated results / success framing. Background Emerald Soft (<code>#E8F5CE</code>), accent Emerald Bold (<code>#1D683F</code>).</p>
-    </div>
-
-    <div class="callout warn">
-      <p class="label">Warn callout</p>
-      <p class="body">Attention / caveat. Background Ochre Soft (<code>#FBEBB1</code>), accent Ochre Bold (<code>#E9A800</code>). Use sparingly - one or two per page section, never stacked.</p>
-    </div>
-
-    <h2>Numeric table demonstration</h2>
-    <p>Data cells use JetBrains Mono with tabular numerals so columns align. Headers stay in DM Sans even when right-aligned (the <code>th.num</code> class only flips alignment, not the font).</p>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Concurrency</th>
-          <th class="num">Iterations</th>
-          <th class="num">Median time</th>
-          <th class="num">Throughput</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>1u</td><td class="num">1</td><td class="num">53.4 min</td><td class="num">1.12/hr</td></tr>
-        <tr><td>10u</td><td class="num">10</td><td class="num">55.4 min</td><td class="num">10.8/hr</td></tr>
-        <tr><td>50u</td><td class="num">99</td><td class="num">54.2 min</td><td class="num">55.3/hr</td></tr>
-        <tr class="highlight"><td>100u</td><td class="num">299</td><td class="num">54.5 min</td><td class="num">110.1/hr</td></tr>
-      </tbody>
-    </table>
-
-    <div class="card">
-      <h3>Elevated card surface</h3>
-      <p>Cards use the brand <code>--shadow</code> recipe - two soft Carbon-tinted layers, never neutral grey. The shadow gives subtle elevation without breaking the editorial flatness of the underlying paper.</p>
-    </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Concurrency</th>
+            <th class="num">Iterations</th>
+            <th class="num">Median time</th>
+            <th class="num">Throughput</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1u</td><td class="num">1</td><td class="num">53.4 min</td><td class="num">1.12/hr</td></tr>
+          <tr><td>10u</td><td class="num">10</td><td class="num">55.4 min</td><td class="num">10.8/hr</td></tr>
+          <tr><td>50u</td><td class="num">99</td><td class="num">54.2 min</td><td class="num">55.3/hr</td></tr>
+          <tr class="highlight"><td>100u</td><td class="num">299</td><td class="num">54.5 min</td><td class="num">110.1/hr</td></tr>
+        </tbody>
+      </table>
+    </section>
 
   </main>
 
+  <!-- ============================================================
+       Footer - mirror of brand bar with smaller wordmark + credit
+       line; version + copyright right-aligned.
+       ============================================================ -->
   <footer>
     <div>
       <div class="brand">
@@ -306,7 +381,7 @@
         <span class="label">Platform Excellence</span>
       </div>
       <div class="credit">Prepared by Damian Arnold &middot; Technical Solutions Lead</div>
-      <div class="note">Compiled as the starter template for the Pigment design system. Replace this paragraph with your own footer note.</div>
+      <div class="note">Starter template for the Pigment design system. Replace this paragraph with your own footer note when authoring a real artefact.</div>
     </div>
     <div class="meta">
       Report v1.0<br>
