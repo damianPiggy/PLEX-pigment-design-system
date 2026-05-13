@@ -40,9 +40,68 @@
       background: var(--paper);
       line-height: 1.5;
       margin: 0;
-      padding: 64px 80px;
+      padding: 32px 80px 48px;
     }
-    main { max-width: 1100px; margin: 0 auto; }
+    .brand-bar, main, .page-footer { max-width: 1100px; margin: 0 auto; }
+
+    /* Brand bar header - wordmark + "Platform Excellence" tagline, anchored
+       by a thin Carbon rule. Sets the editorial tone at first glance. */
+    .brand-bar {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      padding-bottom: 20px;
+      margin-bottom: 56px;
+      border-bottom: 1px solid var(--rule);
+    }
+    .brand-bar .brand {
+      font: 700 18px/1 'DM Sans', sans-serif;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+    .brand-bar .brand-sub {
+      font: 400 15px/1 'Crimson Pro', Georgia, serif;
+      letter-spacing: -0.01em;
+      color: var(--muted);
+    }
+    .brand-bar .brand-meta {
+      margin-left: auto;
+      font: 700 10px/1.4 'DM Sans', sans-serif;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* Page footer - credit line + meta. Mirror of the brand bar, anchoring
+       the bottom of the page with a Carbon rule. */
+    .page-footer {
+      margin-top: 96px;
+      padding-top: 24px;
+      border-top: 1px solid var(--rule);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .page-footer .credit {
+      font: 400 13px/1.5 'DM Sans', sans-serif;
+      color: var(--muted);
+      margin: 0;
+      max-width: none;
+    }
+    .page-footer .credit strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .page-footer .meta {
+      font: 700 10px/1.4 'DM Sans', sans-serif;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0;
+    }
 
     /* Eyebrow kicker + display headline + serif sub-header. */
     .eyebrow {
@@ -174,6 +233,13 @@
   </style>
 </head>
 <body>
+
+  <header class="brand-bar">
+    <span class="brand">PIGMENT</span>
+    <span class="brand-sub">Platform Excellence</span>
+    <span class="brand-meta">Design System · v1</span>
+  </header>
+
   <main>
 
     <p class="eyebrow">Confidential · Pigment Design System · Starter</p>
@@ -246,5 +312,11 @@
     </div>
 
   </main>
+
+  <footer class="page-footer">
+    <p class="credit">Prepared by <strong>Damian Arnold</strong> · Technical Solutions Lead · Pigment Platform Excellence</p>
+    <p class="meta">Confidential · 13th May 2026</p>
+  </footer>
+
 </body>
 </html>
