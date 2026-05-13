@@ -1,0 +1,108 @@
+/* Pigment design system - canonical brand tokens.
+ *
+ * Single source of truth for every colour in any Pigment-branded artefact.
+ * Inline this file verbatim into HTML <style>, or @import it as a stylesheet.
+ * Reference the token names (--ink, --paper, --emerald-bold, etc.) in
+ * component CSS; never inline raw hex values.
+ *
+ * Brand reference: Pigment Brand Style Guidelines 2024.
+ *
+ * For typography, layout, and component recipes, see SKILL.md.
+ */
+:root {
+  /* ==========================================================================
+   * Foundation - Carbon scale + Titanium paper
+   * ========================================================================== */
+  --carbon-100: #020D23;
+  --carbon-90:  #061336;
+  --carbon-50:  rgba(2, 13, 35, 0.65);
+  --carbon-40:  rgba(2, 13, 35, 0.40);
+  --carbon-20:  rgba(2, 13, 35, 0.10);
+  --carbon-10:  rgba(2, 13, 35, 0.04);
+  --titanium:   #F7F4F3;
+  --paper-deep: #EFEAE5;
+  --white:      #FFFFFF;
+
+  /* ==========================================================================
+   * Sophisticated palette - Bold variants
+   * Body emphasis layer: typography accents, callout labels, chart series,
+   * button states. Use sparingly - one or two per surface.
+   * ========================================================================== */
+  --emerald-bold:    #1D683F;
+  --cobalt-bold:     #152D80;
+  --turquoise-bold:  #1A5B70;
+  --ochre-bold:      #E9A800;
+  --fuchsia-bold:    #720741;
+  --amethyst-bold:   #4C2672;
+  --sienna-bold:     #C14812;
+
+  /* ==========================================================================
+   * Soft palette - background tints
+   * Pair each Soft with its Bold for callout cards (background = Soft,
+   * accent border or label = Bold).
+   * ========================================================================== */
+  --emerald-soft:    #E8F5CE;
+  --cobalt-soft:     #B4D7FF;
+  --ochre-soft:      #FBEBB1;
+  --fuchsia-soft:    #FFCCE7;
+  --amethyst-soft:   #E9CDFF;
+  --sienna-soft:     #FBD9B1;
+  --turquoise-soft:  #B0F1FF;
+
+  /* ==========================================================================
+   * Vivid palette - accent only, use sparingly
+   * For highlights, badges, single-point emphasis. Never as a body fill.
+   * ========================================================================== */
+  --emerald-vivid:   #01A54C;
+  --cobalt-vivid:    #0355F3;
+  --fuchsia-vivid:   #F34F77;
+  --ochre-vivid:     #FFD468;
+  --sienna-vivid:    #FFC368;
+  --turquoise-vivid: #00BBCC;
+  --amethyst-vivid:  #AE89FF;
+
+  /* ==========================================================================
+   * Chart-specific palette
+   * Slightly brighter than the body Bold variants for data-vis legibility
+   * on a cream canvas.
+   * ========================================================================== */
+  --chart-primary:        #1f4e79;
+  --chart-accent:         #2e75b6;
+  --chart-positive:       #2e7d32;
+  --chart-positive-soft:  #66bb6a;
+  --chart-neutral:        #5a5a5a;
+  --chart-grid:           #cccccc;
+  --chart-warn:           #c62828;
+
+  /* ==========================================================================
+   * Semantic aliases - use these in component CSS rather than raw values.
+   * ========================================================================== */
+  --ink:        var(--carbon-100);
+  --ink-soft:   var(--carbon-90);
+  --paper:      var(--titanium);
+  --rule:       rgba(2, 13, 35, 0.12);
+  --body:       var(--carbon-100);
+  --muted:      var(--carbon-50);
+  --green:      var(--emerald-bold);
+  --green-soft: var(--emerald-soft);
+  --green-line: rgba(29, 104, 63, 0.30);
+  --blue:       var(--cobalt-bold);
+  --blue-tint:  rgba(180, 215, 255, 0.35);
+  --blue-line:  rgba(21, 45, 128, 0.20);
+  --gold:       var(--ochre-bold);
+
+  /* Component shadow recipe - Carbon-tinted, never neutral grey. */
+  --shadow:     0 1px 2px rgba(2, 13, 35, .04),
+                0 8px 24px rgba(2, 13, 35, .06);
+}
+
+/* Dark mode: swap Carbon and Titanium. The Bold/Soft/Vivid palettes stay. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: var(--carbon-90);
+    --ink:   var(--titanium);
+    --body:  var(--titanium);
+    --muted: rgba(247, 244, 243, 0.65);
+    --rule:  rgba(247, 244, 243, 0.18);
+  }
+}

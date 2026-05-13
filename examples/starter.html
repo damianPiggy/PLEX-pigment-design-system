@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pigment design system - starter</title>
+
+  <!-- Font loading: DM Sans (primary), Crimson Pro (serif accents), JetBrains Mono (numerics). -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300..800&family=Crimson+Pro:ital,wght@0,300..600;1,300..600&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+  <!-- Inline tokens.css verbatim. For multi-page sites, @import or link the file instead. -->
+  <style>
+    :root {
+      --carbon-100: #020D23; --carbon-90: #061336;
+      --carbon-50: rgba(2,13,35,0.65); --carbon-40: rgba(2,13,35,0.40);
+      --carbon-20: rgba(2,13,35,0.10); --carbon-10: rgba(2,13,35,0.04);
+      --titanium: #F7F4F3; --paper-deep: #EFEAE5; --white: #FFFFFF;
+      --emerald-bold: #1D683F; --cobalt-bold: #152D80;
+      --turquoise-bold: #1A5B70; --ochre-bold: #E9A800;
+      --emerald-soft: #E8F5CE; --cobalt-soft: #B4D7FF; --ochre-soft: #FBEBB1;
+      --chart-primary: #1f4e79; --chart-accent: #2e75b6;
+      --chart-positive: #2e7d32; --chart-neutral: #5a5a5a;
+      --ink: var(--carbon-100); --ink-soft: var(--carbon-90);
+      --paper: var(--titanium); --rule: rgba(2,13,35,0.12);
+      --body: var(--carbon-100); --muted: var(--carbon-50);
+      --green: var(--emerald-bold); --blue: var(--cobalt-bold);
+      --gold: var(--ochre-bold);
+      --shadow: 0 1px 2px rgba(2,13,35,.04), 0 8px 24px rgba(2,13,35,.06);
+    }
+
+    /* Reset + base typography. The ss01 feature-setting enables the
+       Alternative-g glyph (flagged as important in the brand guide). */
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'DM Sans', Arial, sans-serif;
+      font-feature-settings: "ss01" on;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.5;
+      margin: 0;
+      padding: 64px 80px;
+    }
+    main { max-width: 1100px; margin: 0 auto; }
+
+    /* Eyebrow kicker + display headline + serif sub-header. */
+    .eyebrow {
+      font: 700 11px/1.1 'DM Sans', sans-serif;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin: 0 0 12px;
+    }
+    h1 {
+      font: 600 56px/1.1 'DM Sans', sans-serif;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      margin: 0 0 36px;
+    }
+    h2 {
+      font: 400 36px/1.0 'Crimson Pro', Georgia, serif;
+      letter-spacing: -0.03em;
+      margin: 48px 0 16px;
+    }
+    h3 {
+      font: 500 22px/1.0 'Crimson Pro', Georgia, serif;
+      letter-spacing: -0.02em;
+      margin: 28px 0 12px;
+    }
+    h1 em, h2 em {
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-style: italic;
+      font-weight: 400;
+    }
+    p {
+      max-width: 70ch;
+      margin: 0 0 16px;
+    }
+    .muted { color: var(--muted); }
+
+    /* Divider-bordered factsheet grid with the canonical padding fix. */
+    .factsheet {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      margin: 36px 0 0;
+      border-top: 1px solid var(--rule);
+      padding-top: 24px;
+    }
+    .factsheet > div {
+      padding-right: 22px;
+      border-right: 1px solid var(--rule);
+    }
+    .factsheet > div:not(:first-child) {
+      padding-left: 22px;
+    }
+    .factsheet > div:last-child {
+      border-right: none;
+      padding-right: 0;
+    }
+    .factsheet .label {
+      font: 700 10px/1.2 'DM Sans', sans-serif;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 6px;
+    }
+    .factsheet .value {
+      font: 600 18px/1.2 'DM Sans', sans-serif;
+      color: var(--ink);
+    }
+
+    /* Callout themes - background = Soft, accent = Bold. */
+    .callout {
+      padding: 18px 22px;
+      margin: 20px 0;
+      border-radius: 2px;
+    }
+    .callout.info     { background: var(--cobalt-soft);  border-left: 4px solid var(--cobalt-bold); }
+    .callout.positive { background: var(--emerald-soft); border-left: 4px solid var(--emerald-bold); }
+    .callout.warn     { background: var(--ochre-soft);   border-left: 4px solid var(--ochre-bold); }
+    .callout .label {
+      font: 700 11px/1.1 'DM Sans', sans-serif;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin: 0 0 4px;
+    }
+    .callout .body {
+      font: 400 15px/1.5 'DM Sans', sans-serif;
+      color: var(--body);
+      max-width: none;
+    }
+
+    /* Tables - DM Sans headers (right-aligned but NOT mono), JetBrains Mono
+       data cells. */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      margin: 16px 0;
+    }
+    th {
+      text-align: left;
+      font-weight: 600;
+      color: var(--ink);
+      border-bottom: 2px solid var(--ink);
+      padding: 12px 14px;
+    }
+    th.num { text-align: right; }
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--rule);
+      color: var(--body);
+    }
+    td.num {
+      font-family: 'JetBrains Mono', Menlo, monospace;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+    tr.highlight td {
+      background: var(--paper-deep);
+      font-weight: 600;
+    }
+
+    /* Card with brand shadow. */
+    .card {
+      background: var(--paper);
+      box-shadow: var(--shadow);
+      border-radius: 4px;
+      padding: 24px;
+      margin: 24px 0;
+    }
+  </style>
+</head>
+<body>
+  <main>
+
+    <p class="eyebrow">Confidential · Pigment Design System · Starter</p>
+    <h1>Style your artefacts with <em>elegance</em>.</h1>
+    <p class="muted">A drop-in HTML skeleton demonstrating the canonical Pigment 2024 visual identity. Open this file in a browser to see the editorial / museum-wayfinding sensibility - Carbon on Titanium, DM Sans Semibold display headings, Crimson Pro serif sub-headers, italic emphasis via &lt;em&gt;.</p>
+
+    <div class="factsheet">
+      <div>
+        <p class="label">Foundation</p>
+        <p class="value">Carbon / Titanium</p>
+      </div>
+      <div>
+        <p class="label">Display</p>
+        <p class="value">DM Sans Semibold</p>
+      </div>
+      <div>
+        <p class="label">Sub-headers</p>
+        <p class="value">Crimson Pro</p>
+      </div>
+      <div>
+        <p class="label">Numerics</p>
+        <p class="value">JetBrains Mono</p>
+      </div>
+    </div>
+
+    <h2>Section heading in <em>Crimson Pro</em></h2>
+    <p>Body text sits in DM Sans Regular at 1.5 line-height. The Alternative-g glyph is enabled via <code>font-feature-settings: "ss01" on</code> - look at any lowercase "g" to see the brand-correct loop shape. Editorial whitespace and a constrained reading width (around 70ch) make paragraphs readable; resist stretching prose to the full page width.</p>
+
+    <h3>Sub-section in Crimson Pro Medium</h3>
+    <p>Italic emphasis inside headings uses <code>&lt;em&gt;</code> tags - the CSS keys on the element name, so <code>&lt;i&gt;</code> won't get the same treatment. Inside an already-serif h2, the <code>&lt;em&gt;</code> stays Crimson Pro italic for typographic continuity.</p>
+
+    <div class="callout info">
+      <p class="label">Info callout</p>
+      <p class="body">Background uses Cobalt Soft (<code>#B4D7FF</code>), accent border uses Cobalt Bold (<code>#152D80</code>). Pair each Soft with its matching Bold for callouts.</p>
+    </div>
+
+    <div class="callout positive">
+      <p class="label">Positive callout</p>
+      <p class="body">Validated results / success framing. Background Emerald Soft (<code>#E8F5CE</code>), accent Emerald Bold (<code>#1D683F</code>).</p>
+    </div>
+
+    <div class="callout warn">
+      <p class="label">Warn callout</p>
+      <p class="body">Attention / caveat. Background Ochre Soft (<code>#FBEBB1</code>), accent Ochre Bold (<code>#E9A800</code>). Use sparingly - one or two per page section, never stacked.</p>
+    </div>
+
+    <h2>Numeric table demonstration</h2>
+    <p>Data cells use JetBrains Mono with tabular numerals so columns align. Headers stay in DM Sans even when right-aligned (the <code>th.num</code> class only flips alignment, not the font).</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Concurrency</th>
+          <th class="num">Iterations</th>
+          <th class="num">Median time</th>
+          <th class="num">Throughput</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1u</td><td class="num">1</td><td class="num">53.4 min</td><td class="num">1.12/hr</td></tr>
+        <tr><td>10u</td><td class="num">10</td><td class="num">55.4 min</td><td class="num">10.8/hr</td></tr>
+        <tr><td>50u</td><td class="num">99</td><td class="num">54.2 min</td><td class="num">55.3/hr</td></tr>
+        <tr class="highlight"><td>100u</td><td class="num">299</td><td class="num">54.5 min</td><td class="num">110.1/hr</td></tr>
+      </tbody>
+    </table>
+
+    <div class="card">
+      <h3>Elevated card surface</h3>
+      <p>Cards use the brand <code>--shadow</code> recipe - two soft Carbon-tinted layers, never neutral grey. The shadow gives subtle elevation without breaking the editorial flatness of the underlying paper.</p>
+    </div>
+
+  </main>
+</body>
+</html>
