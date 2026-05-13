@@ -711,7 +711,8 @@ Auto-fall back to a raster path (`build_pdf_raster.py`) if the required scale dr
 
 ```bash
 pip install playwright img2pdf pillow
-playwright install chromium
+# Driven against the system Google Chrome via channel="chrome" - no
+# bundled-Chromium download needed.
 
 python scripts/build_pdf.py
 # renders examples/starter.html → starter.pdf

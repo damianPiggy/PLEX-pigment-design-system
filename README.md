@@ -25,7 +25,8 @@ To produce a pageless single-page PDF (the format Pigment customer reports ship 
 
 ```bash
 pip install playwright img2pdf pillow
-playwright install chromium
+# Uses the system Google Chrome via Playwright's chrome channel - no
+# `playwright install chromium` step needed.
 
 python scripts/build_pdf.py             # renders examples/starter.html → starter.pdf
 python scripts/build_pdf.py --input my-artefact.html --output my-artefact.pdf

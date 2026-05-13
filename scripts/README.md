@@ -19,10 +19,11 @@ This means callers always get a single-page PDF without needing to know which pa
 
 ```bash
 pip install playwright img2pdf pillow
-playwright install chromium
 ```
 
-The vector path uses Playwright + headless Chromium. The raster fallback adds `img2pdf` and `pillow` for the screenshot → PDF conversion.
+The scripts drive Playwright against the **system-installed Google Chrome** (`channel="chrome"`), not the bundled Chromium - so the `playwright install chromium` step is NOT required. Make sure Google Chrome is installed on the host machine; install from [google.com/chrome](https://www.google.com/chrome/) if needed.
+
+The vector path uses Playwright + Chrome. The raster fallback adds `img2pdf` and `pillow` for the screenshot → PDF conversion.
 
 ## Usage
 

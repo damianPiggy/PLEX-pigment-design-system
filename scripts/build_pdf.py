@@ -103,7 +103,10 @@ def build_vector_pdf(html_path: Path, pdf_path: Path) -> dict:
     page_w_pt_initial = round(WIDTH_PX * 0.75)
 
     with sync_playwright() as p:
-        browser = p.chromium.launch()
+        # Use the system Chrome (channel="chrome") rather than the bundled
+        # Chromium so callers don't have to run `playwright install chromium`.
+        # Requires Google Chrome to be installed on the host machine.
+        browser = p.chromium.launch(channel="chrome")
         ctx = browser.new_context(
             viewport={"width": WIDTH_PX, "height": 1000},
             device_scale_factor=1,

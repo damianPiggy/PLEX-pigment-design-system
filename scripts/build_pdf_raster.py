@@ -52,7 +52,9 @@ def render_raster_pdf(
     pdf_path = Path(pdf_path)
 
     with sync_playwright() as p:
-        browser = p.chromium.launch()
+        # System Chrome rather than bundled Chromium - avoids the
+        # `playwright install chromium` requirement.
+        browser = p.chromium.launch(channel="chrome")
         ctx = browser.new_context(
             viewport={"width": width_px, "height": 1000},
             device_scale_factor=2,  # high-DPI for crisp text/charts
