@@ -686,7 +686,71 @@ Drop into any browser as a standalone file - no build step, no preprocessing. Ed
 
 ---
 
-## Section 6 - Implementation patterns
+## Section 6 - Pageless PDF generation
+
+Pigment's editorial long-form artefacts (scalability reports, prospect collateral, executive briefings) ship as **single-page, text-selectable, pageless PDFs** - one tall page sized to the actual content height, not paginated into fixed-height A4/Letter pages. Standard print CSS doesn't work; the techniques below are required.
+
+### Why pageless
+
+Pigment's visual identity is editorial: continuous reading flow, generous whitespace, no arbitrary page breaks chopping a section in half. Paginated PDFs fight this by splitting content at fixed intervals. A single tall page preserves the on-screen reading rhythm exactly, and modern PDF viewers handle long pages natively (scroll, not page-flip).
+
+### The Chromium constraint
+
+`printToPDF` auto-rotates and paginates any single page taller than ~14,400pt. Long-form Pigment reports hit this ceiling routinely (the Valeo report runs to ~14,200pt). The pipeline handles it in four stages:
+
+1. **Probe `@page` injection.** Inject an oversized `@page` rule (20,000pt tall) so the layout reflows under the same constraints `printToPDF` will use.
+2. **Measure post-reflow.** Read `document.documentElement.scrollHeight` AFTER the reflow. The post-injection height can be 1.5-2× the pre-injection height for some templates - pre-injection measurement gives a stale value and the final page comes out too short.
+3. **Scale calculation.** Compute the `printToPDF` scale needed to land under `PT_TARGET - SCALE_BUFFER` (= 14,300 - 80 = 14,220pt). Scaling against `PT_TARGET` directly lets rounding push scaled content over the 14,400pt boundary; the buffer prevents that.
+4. **Re-inject + render.** Re-inject the final `@page` with the correct dimensions, hold page width constant (scaling width would re-flow content taller), call `page.pdf()`.
+
+Auto-fall back to a raster path (`build_pdf_raster.py`) if the required scale drops below `MIN_SCALE` (0.55) - below that, body text becomes unreadable.
+
+### Working scripts in this repo
+
+[`scripts/build_pdf.py`](scripts/build_pdf.py) is a complete, drop-in implementation. Run it against any HTML built from this design system:
+
+```bash
+pip install playwright img2pdf pillow
+playwright install chromium
+
+python scripts/build_pdf.py
+# renders examples/starter.html → starter.pdf
+
+python scripts/build_pdf.py --input my-artefact.html --output my-artefact.pdf
+```
+
+See [`scripts/README.md`](scripts/README.md) for the full reference (constants, raster path, what NOT to simplify).
+
+### What NOT to simplify
+
+Four invariants the scripts encode; removing any has bitten before:
+
+- **Two-stage measurement.** Pre-`@page`-injection height is stale because Chromium reflows when print media activates. Always measure AFTER probe injection.
+- **SCALE_BUFFER (80pt).** Scale computed against `PT_TARGET - SCALE_BUFFER`, not `PT_TARGET`. Without the buffer, rounding pushes scaled content above the 14,400pt boundary → second page.
+- **Fixed page width.** Width held constant across probe + final `@page`. Scaling the width re-flows content taller and breaks the page count.
+- **Raster fallback.** Below MIN_SCALE (0.55), the vector path produces cramped type. Auto-fallback to raster keeps callers from seeing a "PDF too tall to render readably" failure mode.
+
+The full rationale is in [`scripts/build_pdf.py`'s module docstring](scripts/build_pdf.py).
+
+### Print-CSS hints
+
+Some additional CSS to harden the pageless render:
+
+```css
+@media print {
+  body { background: var(--paper); }   /* preserve cream paper */
+  /* Disable page-break behaviour - we want one tall page. */
+  * { page-break-inside: avoid !important; break-inside: avoid !important; }
+  /* Prevent unwanted shrink-to-fit on outputs that try to honour @page-break. */
+  .summary, .cover, footer { break-inside: avoid; }
+}
+```
+
+These are advisory - the script's `@page` injection is the primary control. Use them when the script isn't available (e.g., browser-native "Save as PDF" from a user's machine).
+
+---
+
+## Section 7 - Implementation patterns
 
 ### Single source of truth
 

@@ -8,9 +8,10 @@ This isn't an official Pigment design-system release - it's a working extract th
 
 | File | What it is |
 |---|---|
-| [`SKILL.md`](SKILL.md) | The canonical reference doc - colours, typography, layout, components, red flags, starter HTML. The whole design system in one self-contained document. |
+| [`SKILL.md`](SKILL.md) | The canonical reference doc - colours, typography, layout, components, pageless-PDF generation, red flags. The whole design system in one self-contained document. |
 | [`tokens.css`](tokens.css) | Standalone CSS custom-properties file. Inline it into HTML `<style>` or `@import` it as a stylesheet. The single source of truth for every colour. |
-| [`examples/starter.html`](examples/starter.html) | Drop-in standalone single-file HTML that renders on-brand immediately. Useful for prototypes, one-pagers, mockups. |
+| [`examples/starter.html`](examples/starter.html) | Drop-in standalone single-file HTML that renders on-brand immediately. Demonstrates the brand bar, cover, executive-summary card, callouts, numeric tables, and footer. |
+| [`scripts/build_pdf.py`](scripts/build_pdf.py) | Render any HTML built from this system into a single-page, text-selectable, pageless PDF. Auto-falls back to raster (`scripts/build_pdf_raster.py`) for very tall content. See [`scripts/README.md`](scripts/README.md). |
 
 ## Quick start
 
@@ -18,6 +19,16 @@ This isn't an official Pigment design-system release - it's a working extract th
 git clone https://github.com/damianPiggy/PLEX-pigment-design-system
 cd PLEX-pigment-design-system
 open examples/starter.html
+```
+
+To produce a pageless single-page PDF (the format Pigment customer reports ship in):
+
+```bash
+pip install playwright img2pdf pillow
+playwright install chromium
+
+python scripts/build_pdf.py             # renders examples/starter.html → starter.pdf
+python scripts/build_pdf.py --input my-artefact.html --output my-artefact.pdf
 ```
 
 Or for an existing project: copy `tokens.css` into your stylesheet path, import it at the top of your component CSS, and reference the tokens (`var(--ink)`, `var(--paper)`, `var(--emerald-bold)`, etc.) instead of inlining hex codes.
