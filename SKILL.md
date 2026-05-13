@@ -178,42 +178,83 @@ body {
 
 | Style | Face | Weight | Letter-spacing | Line-height | Casing | Use |
 |---|---|---|---|---|---|---|
-| Header XL | DM Sans | 600 | -2% | 110% | UPPER | Hero / cover headlines |
-| Sub Header L | Crimson Pro | 400 | -3% | 100% | Title | Section h2 (large) |
-| Sub Header M | Crimson Pro | 400 | -3% | 100% | Title | Section h2 |
+| Header XL | DM Sans | 600 | -2% | 110% | UPPER | Marketing hero headlines (where impact > elegance) |
+| **Sub Header L** | **Crimson Pro** | **400** | **-3%** | **100%** | **Title** | **Cover h1 for customer-facing reports** |
+| Sub Header M | Crimson Pro | 400 | -3% | 100% | Title | Body-section h2 |
 | Sub Header S | Crimson Pro | 500 | -2% | 100% | Title | h3 subsections |
 | Sub Header XS | DM Sans | 600 | 0% | 110% | Title | h4 / nested |
 | Eyebrow | DM Sans | 700 | 7% | 110% | UPPER | Section kickers, meta tags |
 | Body | DM Sans | 400 | - | 1.5 | Sentence | Paragraph text |
-| Quotes | Crimson Pro | 300 italic | - | 1.4 | Sentence | Pull quotes |
+| Quotes | Crimson Pro | 300 italic | - | 1.4 | Sentence | Pull quotes, ledes |
 | Buttons | DM Sans | 500 | - | 1 | Sentence | CTAs |
 
-CSS recipe for the headline / sub-header combo:
+**Important practice note.** For customer-facing reports (scalability assessments, prospect deliverables, etc.) the **cover h1 uses Sub Header L** (Crimson Pro 400 mixed-case), NOT Header XL (DM Sans uppercase). Header XL is reserved for marketing hero contexts where the brand wants to lean into shouty impact. The Valeo scalability report convention, validated as the canonical pattern, uses Crimson Pro for the cover headline with the `<em>` element picking up emerald-bold italic emphasis. The `examples/starter.html` in this repo demonstrates this verbatim.
+
+CSS recipe - cover h1 (Crimson Pro mixed-case, emerald-italic `<em>`):
+
+```css
+.cover h1 {
+  font: 400 64px/1.0 'Crimson Pro', Georgia, serif;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  margin: 0 0 26px;
+  max-width: 18ch;
+}
+.cover h1 em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--emerald-bold);
+}
+```
+
+CSS recipe - body-section h2 / h3:
+
+```css
+section.body h2 {
+  font: 400 32px/1.05 'Crimson Pro', Georgia, serif;
+  letter-spacing: -0.03em;
+  margin: 36px 0 16px;
+}
+section.body h2 em {
+  font-style: italic;
+  color: var(--emerald-bold);
+  font-weight: 400;
+}
+section.body h3 {
+  font: 500 22px/1.0 'Crimson Pro', Georgia, serif;
+  letter-spacing: -0.02em;
+}
+```
+
+CSS recipe - eyebrow with the canonical emerald-dash prefix:
 
 ```css
 .eyebrow {
   font: 700 11px/1.1 'DM Sans', sans-serif;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: var(--ink);
+  color: var(--emerald-bold);
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 30px;
 }
-h1 {
+.eyebrow::before {
+  content: "";
+  width: 36px;
+  height: 1px;
+  background: var(--emerald-bold);
+}
+```
+
+CSS recipe - marketing-hero h1 (Header XL spec, used outside customer reports):
+
+```css
+.hero h1 {
   font: 600 56px/1.1 'DM Sans', sans-serif;
   letter-spacing: -0.02em;
   text-transform: uppercase;
   margin: 0;
-}
-h2 {
-  font: 400 36px/1.0 'Crimson Pro', Georgia, serif;
-  letter-spacing: -0.03em;
-  margin: 0;
-}
-h3 {
-  font: 500 22px/1.0 'Crimson Pro', Georgia, serif;
-  letter-spacing: -0.02em;
-}
-h4 {
-  font: 600 14px/1.1 'DM Sans', sans-serif;
 }
 ```
 
@@ -300,6 +341,220 @@ Eyebrow kicker (DM Sans 700 7%-tracking ALL CAPS) above a Crimson Pro h2:
   font: 400 32px/1.0 'Crimson Pro', Georgia, serif;
   letter-spacing: -0.03em;
 }
+```
+
+### Brand bar (header)
+
+Two-column flex: Pigment wordmark SVG + thin vertical divider + "Platform Excellence" label on the left; right-aligned meta with confidentiality + audience + date + version. Anchored by a Carbon-rule border below.
+
+```html
+<header class="brandbar">
+  <div class="mark">
+    <span class="logo"><!-- Pigment wordmark SVG, height 26px --></span>
+    <span class="divider"></span>
+    <span class="label">Platform Excellence</span>
+  </div>
+  <div class="meta">
+    Confidential &middot; Prepared for &lt;Audience&gt;<br>
+    <strong>13th May 2026</strong> &middot; v1.0
+  </div>
+</header>
+```
+
+```css
+.brandbar {
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--rule); padding: 26px 0 22px;
+}
+.brandbar .mark { display: flex; align-items: center; gap: 18px; }
+.brandbar .mark .logo { height: 26px; display: block; }
+.brandbar .mark .logo svg { height: 100%; width: auto; display: block; }
+.brandbar .mark .divider { width: 1px; height: 22px; background: var(--rule); }
+.brandbar .mark .label {
+  font: 700 11px/1 'DM Sans', sans-serif;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--carbon-50);
+}
+.brandbar .meta {
+  font: 500 11px/1.6 'DM Sans', sans-serif;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--muted); text-align: right;
+}
+.brandbar .meta strong { color: var(--ink); font-weight: 700; }
+```
+
+### Cover (customer-facing report front-matter)
+
+The canonical cover structure used by the scalability-report pipeline. Emerald-dashed eyebrow, Crimson Pro mixed-case headline with emerald-italic `<em>`, Crimson Pro 300 italic lede, and a 4-cell factsheet grid with the divider-grid padding invariant.
+
+```html
+<section class="cover">
+  <div class="eyebrow">Customer scalability assessment</div>
+  <h1>Validated for <em>660-1,000</em> active users.</h1>
+  <p class="lede">Across nine load test runs ... <strong>660-1,000 active user base</strong>.</p>
+  <div class="factsheet">
+    <div><div class="label">Test journey</div><div class="value">User journey - full month-end</div></div>
+    <div><div class="label">Concurrency range</div><div class="value">1 &middot; 10 &middot; ... &middot; 100</div></div>
+    <div><div class="label">Driver footprint</div><div class="value">10 GCP zones, EMEA + AMER</div></div>
+    <div><div class="label">Reporting date</div><div class="value">10th May 2026</div></div>
+  </div>
+</section>
+```
+
+```css
+.cover { padding: 64px 0 56px; border-bottom: 1px solid var(--rule); position: relative; }
+.cover .eyebrow {
+  font: 700 11px/1.1 'DM Sans', sans-serif;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--emerald-bold); margin-bottom: 30px;
+  display: inline-flex; align-items: center; gap: 14px;
+}
+.cover .eyebrow::before {
+  content: ""; width: 36px; height: 1px; background: var(--emerald-bold);
+}
+.cover h1 {
+  font: 400 64px/1.0 'Crimson Pro', Georgia, serif;
+  letter-spacing: -0.03em; color: var(--ink);
+  margin: 0 0 26px; max-width: 18ch;
+}
+.cover h1 em { font-style: italic; font-weight: 400; color: var(--emerald-bold); }
+.cover .lede {
+  font: 300 22px/1.4 'Crimson Pro', Georgia, serif;
+  font-style: italic; letter-spacing: -0.01em;
+  color: var(--ink-soft); max-width: 60ch; margin: 0 0 36px;
+}
+.cover .lede strong { font-weight: 600; font-style: italic; color: var(--emerald-bold); }
+.cover .factsheet {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+  border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+  margin-top: 40px;
+}
+.cover .factsheet > div { padding: 18px 22px 18px 0; border-right: 1px solid var(--rule); }
+.cover .factsheet > div:not(:first-child) { padding-left: 22px; }
+.cover .factsheet > div:last-child { border-right: none; padding-right: 0; }
+.cover .factsheet .label {
+  font: 700 10px/1 'DM Sans', sans-serif;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 8px;
+}
+.cover .factsheet .value {
+  font: 500 19px/1.2 'Crimson Pro', Georgia, serif;
+  letter-spacing: -0.02em; color: var(--ink);
+}
+```
+
+### Executive summary (dark card with emerald stripe + KPI strip)
+
+The signature feature block for any report-shaped artefact. Dark Carbon-100 background, 6px emerald accent stripe down the right edge, Crimson Pro h2 in titanium with emerald-soft italic `<em>`, body paragraphs in titanium 78%, pull quote with emerald-bold left-border, and a 5-cell KPI strip across the bottom.
+
+```html
+<section class="summary">
+  <div class="tag">Executive Summary</div>
+  <h2>Linear scaling through <em>100 concurrent users</em> ... zero degradation.</h2>
+  <p>Pigment delivers <strong>linear scalability ...</strong></p>
+  <p class="pull">Translated to the customer's planning horizon ...</p>
+  <div class="kpis">
+    <div><div class="num">100<small>&nbsp;users</small></div><div class="lab">Validated concurrent capacity ...</div></div>
+    <div><div class="num">110.1<small>&nbsp;iter/hr</small></div><div class="lab">Full month-end iterations per hour ...</div></div>
+    <!-- 5 cells total -->
+  </div>
+</section>
+```
+
+```css
+.summary {
+  margin: 56px 0; padding: 52px 56px; border-radius: 4px;
+  background: var(--carbon-100); color: rgba(247,244,243,0.85);
+  position: relative; overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.summary::before {
+  content: ""; position: absolute; top: 0; right: 0; bottom: 0;
+  width: 6px; background: var(--emerald-bold);
+}
+.summary .tag {
+  font: 700 11px/1.1 'DM Sans', sans-serif;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--emerald-soft); margin-bottom: 18px;
+}
+.summary h2 {
+  font: 400 38px/1.05 'Crimson Pro', Georgia, serif;
+  letter-spacing: -0.03em; color: var(--titanium);
+  margin: 0 0 24px; max-width: 26ch;
+}
+.summary h2 em { font-style: italic; color: var(--emerald-soft); font-weight: 400; }
+.summary p {
+  font-size: 15.5px; line-height: 1.6;
+  color: rgba(247,244,243,0.78);
+  max-width: 60ch; margin: 0 0 14px;
+}
+.summary p strong, .summary .pull strong { color: var(--titanium); font-weight: 600; }
+.summary .pull {
+  border-left: 2px solid var(--emerald-bold);
+  padding: 8px 0 8px 20px; margin: 28px 0 6px;
+  font: 400 italic 21px/1.4 'Crimson Pro', Georgia, serif;
+  letter-spacing: -0.015em; color: var(--titanium); max-width: 56ch;
+}
+
+/* KPI strip - 5 columns, divider-grid padding applied. */
+.kpis {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 0;
+  margin-top: 38px; padding-top: 28px;
+  border-top: 1px solid rgba(255,255,255,.18);
+}
+.kpis > div { padding-right: 16px; border-right: 1px solid rgba(255,255,255,.12); }
+.kpis > div:not(:first-child) { padding-left: 16px; }
+.kpis > div:last-child { border-right: none; }
+.kpis .num {
+  font: 500 40px/1 'Crimson Pro', Georgia, serif;
+  letter-spacing: -0.03em; color: var(--titanium); margin-bottom: 10px;
+}
+.kpis .num small {
+  font-size: 16px; color: var(--emerald-soft);
+  font-weight: 500; letter-spacing: -0.01em;
+}
+.kpis .lab {
+  font-size: 12px; font-weight: 500; line-height: 1.4;
+  color: rgba(247,244,243,0.65);
+}
+```
+
+**Five KPI cells only** - never six. The user explicitly fixed this on the Valeo build; a sixth dilutes the impact and the divider grid stops feeling editorial.
+
+### Page footer (mirror of the brand bar)
+
+```html
+<footer>
+  <div>
+    <div class="brand">
+      <span class="logo"><!-- Pigment wordmark SVG, height 18px --></span>
+      <span class="label">Platform Excellence</span>
+    </div>
+    <div class="credit">Prepared by Damian Arnold &middot; Technical Solutions Lead</div>
+    <div class="note">Customer-specific footer note here.</div>
+  </div>
+  <div class="meta">Report v1.0<br>&copy; 2026</div>
+</footer>
+```
+
+```css
+footer {
+  padding: 36px 0 56px; border-top: 1px solid var(--rule);
+  display: grid; grid-template-columns: 1fr auto; gap: 24px;
+  align-items: end; font-size: 12px; color: var(--muted);
+}
+footer .brand { display: flex; align-items: center; gap: 14px; }
+footer .brand .logo { height: 18px; display: block; }
+footer .brand .label {
+  font: 700 11px/1 'DM Sans', sans-serif;
+  letter-spacing: 0.07em; text-transform: uppercase; color: var(--carbon-50);
+}
+footer .meta {
+  font: 500 11px/1.4 'DM Sans', sans-serif;
+  letter-spacing: 0.07em; text-transform: uppercase; text-align: right;
+}
+footer .credit { margin-top: 14px; color: var(--ink); font-weight: 600; font-size: 13px; }
+footer .note { margin-top: 6px; color: var(--muted); font-size: 12px; max-width: 60ch; }
 ```
 
 ### Callout cards
@@ -407,77 +662,27 @@ The Pigment press kit lives at `~/Downloads/Pigment press kit/`. Logo variants: 
 
 ## Section 5 - Starter HTML skeleton
 
-Copy-paste starting point for any new Pigment-branded HTML artefact:
+See [`examples/starter.html`](examples/starter.html) - a complete, working single-file artefact demonstrating every canonical pattern in this skill:
 
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pigment - Document Title</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300..800&family=Crimson+Pro:ital,wght@0,300..600;1,300..600&family=JetBrains+Mono:wght@400;500;700&display=swap">
-  <style>
-    :root {
-      --carbon-100: #020D23; --carbon-90: #061336;
-      --carbon-50: rgba(2,13,35,0.65); --carbon-40: rgba(2,13,35,0.40);
-      --carbon-20: rgba(2,13,35,0.10); --carbon-10: rgba(2,13,35,0.04);
-      --titanium: #F7F4F3; --paper-deep: #EFEAE5; --white: #FFFFFF;
-      --emerald-bold: #1D683F; --cobalt-bold: #152D80;
-      --turquoise-bold: #1A5B70; --ochre-bold: #E9A800;
-      --emerald-soft: #E8F5CE; --cobalt-soft: #B4D7FF; --ochre-soft: #FBEBB1;
-      --ink: var(--carbon-100); --paper: var(--titanium);
-      --rule: rgba(2,13,35,0.12); --body: var(--carbon-100); --muted: var(--carbon-50);
-      --shadow: 0 1px 2px rgba(2,13,35,.04), 0 8px 24px rgba(2,13,35,.06);
-    }
-    * { box-sizing: border-box; }
-    body {
-      font-family: 'DM Sans', Arial, sans-serif;
-      font-feature-settings: "ss01" on;
-      color: var(--ink);
-      background: var(--paper);
-      line-height: 1.5;
-      margin: 0;
-      padding: 64px 80px;
-    }
-    main { max-width: 1100px; margin: 0 auto; }
-    .eyebrow {
-      font: 700 11px/1.1 'DM Sans', sans-serif;
-      letter-spacing: 0.07em; text-transform: uppercase;
-      color: var(--ink);
-    }
-    h1 {
-      font: 600 56px/1.1 'DM Sans', sans-serif;
-      letter-spacing: -0.02em; text-transform: uppercase;
-      margin: 16px 0 32px;
-    }
-    h2 {
-      font: 400 36px/1.0 'Crimson Pro', Georgia, serif;
-      letter-spacing: -0.03em; margin: 48px 0 16px;
-    }
-    h1 em, h2 em {
-      font-family: 'Crimson Pro', Georgia, serif;
-      font-style: italic; font-weight: 400;
-    }
-    p { max-width: 70ch; }
-    .muted { color: var(--muted); }
-  </style>
-</head>
-<body>
-  <main>
-    <div class="eyebrow">CONFIDENTIAL · INTERNAL</div>
-    <h1>Title with <em>italic</em> emphasis</h1>
-    <p>Body paragraph in DM Sans. Notice the alternative-g glyph (look at any "g" - the loop is the "ss01" stylistic set the brand guide flags as important).</p>
-    <h2>Section heading in Crimson Pro</h2>
-    <p>Editorial spacing, generous margins, max-width keeps reading lines short.</p>
-  </main>
-</body>
-</html>
+- Brand bar header (Pigment wordmark SVG + Platform Excellence label + meta)
+- Cover section (emerald-dashed eyebrow + Crimson Pro h1 + italic lede + 4-cell factsheet)
+- Executive summary card (dark Carbon-100 surface + emerald stripe + Crimson h2 + pull quote + 5-KPI strip)
+- Numbered body section (eyebrow kicker + Crimson h2 + supporting prose)
+- Callout cards (info / positive / warn themes)
+- Numeric table (DM Sans headers, JetBrains Mono right-aligned cells)
+- Page footer (mirror of the brand bar, with credit + version + copyright)
+
+The starter is byte-aligned with the load-tester scalability-report templates (same class names, same CSS values, same wordmark SVG), so anything built from it can be ported into the report pipeline directly.
+
+To use:
+
+```bash
+cp examples/starter.html my-new-artefact.html
+# edit the cover / summary / body content; CSS tokens at the top of <style>
+# stay the same so the brand identity is preserved automatically
 ```
 
-Drop into any environment as a standalone file and it renders on-brand.
+Drop into any browser as a standalone file - no build step, no preprocessing. Edit, save, refresh.
 
 ---
 
@@ -519,5 +724,8 @@ Don't add when:
 | "Use grey shadow on Titanium paper" | Shadow tint should be Carbon-rgba, never neutral grey. The `--shadow` recipe is in the tokens. |
 | "Inline the divider line directly between cells" | Cell content will crash into it. Apply the `:not(:first-child) { padding-left: 22px }` recipe. |
 | "Headings in Crimson Pro Bold, body in DM Sans Bold" | Crimson Pro is Regular/Medium. DM Sans Semibold is the body-bold weight. Don't use heavy weights of Crimson Pro - it's a transitional serif, not a display face. |
+| "Cover h1 in DM Sans Semibold uppercase (Header XL)" | For customer-facing reports the cover h1 is **Crimson Pro 400 mixed-case** (Sub Header L), with the `<em>` element picking up emerald-bold italic. Header XL is reserved for marketing-hero contexts where shouty impact > editorial elegance. The Valeo report's "Validated for *660-1,000* active users." is the canonical reference. |
+| "Reuse `.num` class for both section eyebrows AND numeric table cells" | They look similar in markup but the section eyebrow uses display: inline-flex with an emerald ::before dash. If the CSS rule isn't scoped (`section.body > .num`), it cascades into `td.num` cells and breaks the table layout entirely. Use direct-child combinators or rename the eyebrow class. |
 | "Stretch paragraphs to the full content width" | Editorial readability tops at ~70ch. Constrain `<p>`. |
 | "Italic via `<i>` for SEO neutrality" | Use `<em>` - the CSS rule (`h2 em` → Crimson Pro italic) is keyed on `em`. Semantic stress emphasis matches the typographic intent. |
+| "Add a 6th KPI to the executive-summary strip" | Five only. A sixth dilutes the impact and breaks the editorial feel of the divider grid. Move surplus figures into the body narrative or an appendix table. |
