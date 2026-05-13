@@ -15,8 +15,8 @@ This isn't an official Pigment design-system release - it's a working extract th
 ## Quick start
 
 ```bash
-git clone https://github.com/damianPiggy/pigment-design-system
-cd pigment-design-system
+git clone https://github.com/damianPiggy/PLEX-pigment-design-system
+cd PLEX-pigment-design-system
 open examples/starter.html
 ```
 
